@@ -24,26 +24,66 @@ footer: Dynamic Mode Decomposition / Koopman Mode Decomposition
 A **dynamical system** describes how a state $\mathbf{x}(t)$ evolves over time $t$ according to a fixed rule.
 
 $$
-\text{Discrete-time:} \quad \mathbf{x}(t+\tau) = f(\mathbf{x}(t)) \qquad
-\text{Continuous-time:} \quad \frac{d\mathbf{x}}{dt} = g(\mathbf{x}(t))
+\text{Continuous-time:} \quad \frac{d\mathbf{x}}{dt} = g(\mathbf{x}(t)) \qquad
+\text{Discrete-time:} \quad \mathbf{x}(t+\tau) = f(\mathbf{x}(t))
 $$
 
 - $\mathbf{x}(t) \in \mathbb{R}^n$: the state at time $t$
 - $f, g$: a (possibly nonlinear) update rule
+- Timeseries $\mathbf{x}(t)$
 - Goal: Decompose the system into state space and temporal patterns, thus reducing temporal and state space dimensions.
+
 
 ---
 
-## Dynamical Systems (continued)
+## The Simplest Dynamical System
 
-**Linear Systems**  
-If $f(\mathbf{x}) = \mathbf{A}\mathbf{x}$, the system is linear:
-
+First order, linear, ordinary differential equation.
 $$
-\mathbf{x}(t+\tau) = \mathbf{A}\mathbf{x}(t)
+\frac{d\mathbf{x}}{dt} = \lambda \mathbf{x}(t)
 $$
 
-$\Rightarrow$ Solutions evolve through powers of $\mathbf{A}$: eigenvalues/eigenvectors govern behavior.
+Closed form solution
+$$
+\mathbf{x}(t) = e^{\lambda t} \mathbf{x}(0)
+$$
+
+Discrete time formulation.
+$$
+\mathbf{x}(t+\tau) = e^{\lambda \tau} \mathbf{x}(t)
+$$
+
+---
+
+## The Simplest Dynamical System
+
+$$
+\frac{d\mathbf{x}}{dt} = \lambda \mathbf{x}(t)
+$$
+- $\lambda=0$ $\implies$ no change
+- $\lambda>0$ $\implies$ exponential growth
+- $\lambda<0$ $\implies$ exponential decay
+
+---
+
+## Linear Dynamical System
+
+System of first order, linear, ordinary differential equation.
+$$
+\frac{d\mathbf{x}}{dt} = \mathbf{L} \mathbf{x}(t)
+$$
+
+Closed form solution
+$$
+\mathbf{x}(t) = e^{\mathbf{L} t} \mathbf{x}(0)
+$$
+
+Discrete time formulation.
+$$
+\mathbf{x}(t+\tau) = e^{\mathbf{L} \tau} \mathbf{x}(t) = \mathbf{A} \mathbf{x}(t)
+$$
+
+Solutions evolve through powers of $\mathbf{A}$: eigenvalues/eigenvectors govern behavior.
 
 ---
 
@@ -52,7 +92,7 @@ $\Rightarrow$ Solutions evolve through powers of $\mathbf{A}$: eigenvalues/eigen
 Assume that the data is sampled from the timeseries:
 
 $$
-\mathbf{x}(t+\tau) \approx \mathbf{A}\,\mathbf{x}(t)
+\mathbf{x}(t+\tau) = \mathbf{A}\,\mathbf{x}(t)
 $$
 
 **Decompose the system** into spatial and temporal patterns.
@@ -76,20 +116,20 @@ $$
 Starting from
 
 $$
-\mathbf{x}(t+\tau) \approx \mathbf{A}\mathbf{x}(t)
+\mathbf{x}(t+\tau) = \mathbf{A}\mathbf{x}(t)
 $$
 
 iterate in discrete time ($m=t/\tau$):
 
 $$
-\mathbf{x}(t) \approx \mathbf{A}^{m}\mathbf{x}(0)
+\mathbf{x}(t) = \mathbf{A}^{m}\mathbf{x}(0)
 $$
 
 If $\mathbf{A}\mathbf{W}=\mathbf{W}\mathbf{\Lambda}$ and $\mathbf{x}(0)=\mathbf{W}\mathbf{b}$, then
 
 $$
 \mathbf{x}(t)
-\approx
+=
 \mathbf{W}\mathbf{\Lambda}^{m}\mathbf{b}
 =
 \sum_{j=1}^{k}\boldsymbol{\phi}_j\lambda_j^{t/\tau}b_j
