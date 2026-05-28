@@ -26,13 +26,6 @@ except ImportError:
 ObservableType = Literal["linear", "polynomial", "rbf"]
 
 
-@dataclass(frozen=True)
-class EigenvalueStore:
-	"""Container for learned Koopman eigenvalues."""
-
-	discrete: np.ndarray
-	continuous: np.ndarray
-
 
 class KoopmanEstimator(BaseEstimator, RegressorMixin):
 	"""Estimate a Koopman operator from state transition data.
@@ -51,9 +44,6 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		Whether to include a constant observable.
 	include_state:
 		Whether to append raw state coordinates in polynomial/RBF observables.
-	dt:
-		Time step used to map discrete-time eigenvalues to continuous-time
-		eigenvalues via ``log(lambda) / dt``.
 	random_state:
 		Optional seed for reproducible RBF center selection.
 	reg:
@@ -68,7 +58,6 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		gamma: float | None = None,
 		include_bias: bool = True,
 		include_state: bool = True,
-		dt: float = 1.0,
 		random_state: int | None = None,
 		reg: float = 0.0,
 	) -> None:
@@ -78,7 +67,6 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		self.gamma = gamma
 		self.include_bias = include_bias
 		self.include_state = include_state
-		self.dt = dt
 		self.random_state = random_state
 		self.reg = reg
 
@@ -86,7 +74,6 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		self,
 		X: np.ndarray,
 		Y: np.ndarray | None = None,
-		dt: float | None = None,
 	) -> "KoopmanEstimator":
 		"""Fit Koopman operator from snapshots.
 
@@ -131,18 +118,6 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 
 		# Learn decoder mapping observables back to state space.
 		self.B_ = self._solve_least_squares(psi_x, X_train)
-
-		self.eigenvalues_discrete_, self.eigenvectors_ = np.linalg.eig(self.K_)
-
-		dt_used = self.dt if dt is None else dt
-		if dt_used <= 0:
-			raise ValueError("dt must be positive.")
-		self.dt_ = float(dt_used)
-		self.eigenvalues_continuous_ = np.log(self.eigenvalues_discrete_) / self.dt_
-		self.eigenvalues_ = EigenvalueStore(
-			discrete=self.eigenvalues_discrete_.copy(),
-			continuous=self.eigenvalues_continuous_.copy(),
-		)
 
 		self.n_observables_ = self.K_.shape[0]
 		self.is_fitted_ = True
