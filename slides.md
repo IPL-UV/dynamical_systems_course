@@ -165,13 +165,35 @@ $$
 $$
 
 - Trend: $r = |\lambda_j|$
-- Oscillation frequency (per $\tau$): $\theta = -i\log(\lambda_j/r)$
+- Oscillation angle per sample step: $\theta = \arg(\lambda_j)$
 
 and with $\lambda_j = r e^{i\theta}$:
 
 $$
 \omega_j = \frac{\log r + i\theta}{\tau}
 $$
+
+---
+
+## Reading Frequency And Decay From Eigenvalues
+
+For a chosen sampling lag $\tau$, write the continuous-time eigenvalue as
+
+$$
+\omega_j = \sigma_j + i\nu_j
+$$
+
+with
+
+$$
+\sigma_j = \frac{\log |\lambda_j|}{\tau},
+\qquad
+\nu_j = \frac{\arg(\lambda_j)}{\tau}.
+$$
+
+- Oscillation frequency: $f_j = \dfrac{|\nu_j|}{2\pi} = \dfrac{|\arg(\lambda_j)|}{2\pi\tau}$
+- Decay time (when $\sigma_j < 0$): $\tau_{\mathrm{decay}}(\tau) = -\dfrac{1}{\sigma_j} = -\dfrac{\tau}{\log |\lambda_j|}$
+- Growth time (when $\sigma_j > 0$): $\tau_{\mathrm{grow}}(\tau) = \dfrac{1}{\sigma_j} = \dfrac{\tau}{\log |\lambda_j|}$
 
 ---
 
