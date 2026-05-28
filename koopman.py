@@ -23,7 +23,7 @@ except ImportError:
 		"""Fallback regressor mixin."""
 
 
-ObservableType = Literal["linear", "polynomial", "rbf"]
+ObservableType = Literal["linear", "polynomial", "rbf", "rff"]
 
 
 
@@ -33,13 +33,21 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 	Parameters
 	----------
 	observable_type:
-		Type of lifting map. One of ``"linear"``, ``"polynomial"``, ``"rbf"``.
+		Type of lifting map. One of ``"linear"``, ``"polynomial"``, ``"rbf"``,
+		or ``"rff"``.
 	degree:
 		Maximum total degree for polynomial observables.
 	n_centers:
 		Number of RBF centers used when ``observable_type='rbf'``.
+	n_fourier_features:
+		Number of random Fourier frequencies used when
+		``observable_type='rff'``. The lifted dimension contributed by the
+		Fourier block is ``2 * n_fourier_features``.
 	gamma:
-		RBF bandwidth parameter. If ``None``, uses ``1 / state_dimension``.
+		Kernel bandwidth parameter. For ``'rbf'`` it gives
+		``exp(-gamma ||x-c||^2)``. For ``'rff'`` it parameterizes the
+		approximated RBF kernel ``exp(-gamma ||x-y||^2)``. If ``None``, uses
+		``1 / state_dimension``.
 	include_bias:
 		Whether to include a constant observable.
 	include_state:
@@ -55,6 +63,7 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		observable_type: ObservableType = "linear",
 		degree: int = 2,
 		n_centers: int = 50,
+		n_fourier_features: int = 100,
 		gamma: float | None = None,
 		include_bias: bool = True,
 		include_state: bool = True,
@@ -64,6 +73,7 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		self.observable_type = observable_type
 		self.degree = degree
 		self.n_centers = n_centers
+		self.n_fourier_features = n_fourier_features
 		self.gamma = gamma
 		self.include_bias = include_bias
 		self.include_state = include_state
@@ -93,14 +103,16 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 			X_train = X
 			Y_train = Y
 
-		if self.observable_type not in {"linear", "polynomial", "rbf"}:
+		if self.observable_type not in {"linear", "polynomial", "rbf", "rff"}:
 			raise ValueError(
-				"observable_type must be one of: 'linear', 'polynomial', 'rbf'."
+				"observable_type must be one of: 'linear', 'polynomial', 'rbf', 'rff'."
 			)
 		if self.degree < 1:
 			raise ValueError("degree must be >= 1.")
 		if self.n_centers < 1:
 			raise ValueError("n_centers must be >= 1.")
+		if self.n_fourier_features < 1:
+			raise ValueError("n_fourier_features must be >= 1.")
 		if not self.include_bias and self.observable_type in {"linear", "polynomial"} and not self.include_state:
 			raise ValueError(
 				"At least one observable must be active. Enable include_bias or include_state."
@@ -195,6 +207,14 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 			self.rbf_centers_ = X[indices]
 			self.rbf_gamma_ = (1.0 / n_states) if self.gamma is None else float(self.gamma)
 
+		if self.observable_type == "rff":
+			self.rff_gamma_ = (1.0 / n_states) if self.gamma is None else float(self.gamma)
+			self.rff_weights_ = self._rng.normal(
+				loc=0.0,
+				scale=np.sqrt(2.0 * self.rff_gamma_),
+				size=(n_states, self.n_fourier_features),
+			)
+
 	def _lift(self, X: np.ndarray) -> np.ndarray:
 		"""Map states into observable space."""
 		X = self._as_2d(X)
@@ -221,6 +241,15 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 			diffs = X[:, None, :] - self.rbf_centers_[None, :, :]
 			sq_dist = np.sum(diffs * diffs, axis=2)
 			parts.append(np.exp(-self.rbf_gamma_ * sq_dist))
+
+		elif self.observable_type == "rff":
+			if self.include_state:
+				parts.append(X)
+			projection = X @ self.rff_weights_
+			scale = np.sqrt(1.0 / self.n_fourier_features)
+			parts.append(
+				scale * np.hstack([np.cos(projection), np.sin(projection)])
+			)
 
 		else:
 			raise RuntimeError("Unsupported observable type during lifting.")

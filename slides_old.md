@@ -177,7 +177,7 @@ $$
 
 <!-- _class: small -->
 
-## Exact DMD ([Dawson et al.](https://arxiv.org/pdf/1507.02264))
+## Exact Dynamic Mode Decomposition ([Dawson et al.](https://arxiv.org/pdf/1507.02264))
 
 1. Stack the data
 
@@ -211,7 +211,7 @@ $$
 
 <!-- _class: small -->
 
-## Exact DMD (continued)
+## Exact Dynamic Mode Decomposition (continued)
 
 4. Dynamic modes
 
@@ -264,7 +264,7 @@ DMD analyzes the stability of this system and generates spatial patterns in $\ma
 
 <!-- _class: small -->
 
-## Optimized DMD ([Askham et al.](https://arxiv.org/pdf/1704.02343))
+## Optimized Dynamic Mode Decomposition ([Askham et al.](https://arxiv.org/pdf/1704.02343))
 
 Stack all the data together:
 
@@ -289,7 +289,7 @@ $$
 
 <!-- _class: small -->
 
-## Optimized DMD (continued)
+## Optimized Dynamic Mode Decomposition (continued)
 
 Equivalent elementwise model:
 
@@ -305,47 +305,13 @@ Solve via variable projection method.
 
 ---
 
-## DMD with Control (DMDc)
-
-If external inputs influence the dynamics, model the system as
-
-$$
-\mathbf{x}(t+\tau) = \mathbf{A}\mathbf{x}(t) + \mathbf{B}\mathbf{u}(t).
-$$
-
-Given state snapshots $\mathbf{X}, \mathbf{X}'$ and input snapshots $\mathbf{\Upsilon}$, estimate both operators by
-
-$$
-\min_{\mathbf{A},\mathbf{B}} \|\mathbf{X}' - \mathbf{A}\mathbf{X} - \mathbf{B}\mathbf{\Upsilon}\|_F.
-$$
-
-- DMDc extends DMD from autonomous systems to controlled systems.
-- Same idea: fit a linear operator from data, then analyze or use it for prediction and control.
-
----
-
 ## Further Reading
 
 *There are MANY variants of DMD*
 
 - [Multiverse of DMD](https://arxiv.org/pdf/2312.00137)
-- [DMD with control (DMDc)](https://epubs.siam.org/doi/pdf/10.1137/15M1013857)
 - [Physics-informed DMD](https://arxiv.org/pdf/2112.04307)
 - [Generalizing DMD: Modern Koopman theory](https://arxiv.org/pdf/2102.12086)
-
----
-
-## Transition To Koopman Lab
-
-- DMD gives the core idea: estimate a linear operator from data and analyze its spectrum.
-- For nonlinear systems, we keep that same idea but move from state space to observable space.
-- In the lab, the main object will be a finite-dimensional Koopman/EDMD fit:
-
-$$
-\mathbf{K} = \arg\min_{\mathbf{K}} \|\mathbf{\Psi}_X\mathbf{K} - \mathbf{\Psi}_Y\|_F^2.
-$$
-
-- So the next section is not a separate topic: it is the nonlinear extension of the DMD story.
 
 ---
 
@@ -368,176 +334,137 @@ $$
 
 ---
 
-## Linear Koopman = DMD
-
-If we choose the observable map to be the identity,
-
-$$
-\psi(\mathbf{x}) = \mathbf{x},
-$$
-
-then the finite-dimensional Koopman update becomes
-
-$$
-\psi_{k+1} = \psi_k \mathbf{K}
-\qquad \Longrightarrow \qquad
-\mathbf{x}_{k+1} = \mathbf{x}_k \mathbf{K}.
-$$
-
-So for linear observables, the Koopman matrix is exactly the same linear evolution operator used in DMD:
-
-$$
-\mathbf{K} = \mathbf{A}.
-$$
-
-- DMD is the special case of Koopman analysis with no lifting.
-- Koopman methods generalize DMD by replacing $\mathbf{x}$ with richer observables $\psi(\mathbf{x})$.
-
----
-
 ## Koopman Mode Decomposition
 
-Choose an observable dictionary
-
-$$
-\psi(\mathbf{x}) = [\psi_1(\mathbf{x}), \ldots, \psi_m(\mathbf{x})]^{\top}.
-$$
+$\psi_m$ “observable” (a.k.a. feature) function
 
 **Koopman operator** (denoted $\mathcal{K}_\tau$) ([Koopman 1931](https://www.pnas.org/doi/pdf/10.1073/pnas.17.5.315)):
 
 $$
-\mathcal{K}_{\tau}[\psi_j](\mathbf{x}(t))
+\mathcal{K}_{\tau}[\psi_m](\mathbf{x}(t))
 =
-\psi_j\bigl(\mathcal{F}_{\tau}\mathbf{x}(t)\bigr)
+\psi_m\bigl(\mathcal{F}_{\tau}\mathbf{x}(t)\bigr)
 =
-\psi_j\bigl(\mathbf{x}(t+\tau)\bigr)
-$$
-
-- The state dynamics $\mathcal{F}_\tau$ may be nonlinear.
-- The Koopman operator is linear in the observables, even when $\mathcal{F}_\tau$ is not.
-
----
-
-## Koopman Mode Decomposition (finite-dimensional view) [Williams et al. 2015](https://arxiv.org/pdf/1411.2260), [Klus et al. 2017](https://arxiv.org/pdf/1712.01572)
-
-In the notebook, we approximate the Koopman operator on a finite dictionary of observables using EDMD.
-
-Given snapshots $\mathbf{x}_k$ and next-step snapshots $\mathbf{y}_k$, define row-stacked lifted data matrices
-
-$$
-\mathbf{\Psi}_X =
-\begin{bmatrix}
-\psi(\mathbf{x}_1)^\top \\
-\vdots \\
-\psi(\mathbf{x}_N)^\top
-\end{bmatrix},
-\qquad
-\mathbf{\Psi}_Y =
-\begin{bmatrix}
-\psi(\mathbf{y}_1)^\top \\
-\vdots \\
-\psi(\mathbf{y}_N)^\top
-\end{bmatrix}.
+\psi_m\bigl(\mathbf{x}(t+\tau)\bigr)
 $$
 
 ---
 
-## Koopman Mode Decomposition (finite-dimensional fit)
+<!-- _class: small -->
 
-We fit a finite-dimensional Koopman matrix $\mathbf{K}$ by
+## Koopman Mode Decomposition (continued 2)
 
-$$
-\mathbf{K} = \arg\min_{\mathbf{K}} \|\mathbf{\Psi}_X \mathbf{K} - \mathbf{\Psi}_Y\|_F^2.
-$$
-
-The notebook also learns a decoder back to state space,
+**Koopman mode decomposition** ([Rowley et al. 2009](https://www.cambridge.org/core/journals/journal-of-fluid-mechanics/article/abs/spectral-analysis-of-nonlinear-flows/311041E1027AE7FEE7DDA36AC9AD4270), [Mezić 2013](https://mgroup.me.ucsb.edu/sites/default/files/publications/mezic_-_2013_-_analysis_of_fluid_flows_via_spectral_properties_of_the_koopman_operator.pdf)):
 
 $$
-\hat{\mathbf{x}} = \psi(\mathbf{x})\,\mathbf{B}.
+\mathbf{x}(t) = \sum_{j=1}^r \mathbf{b}_j e^{\omega_j t}\,\phi_j(\mathbf{x}(0))
 $$
 
-- $\mathbf{K}$ advances observables forward in time.
-- $\mathbf{B}$ maps lifted coordinates back to physical variables.
-- This is the exact pipeline used in the lab before spectral analysis.
+- $\mathbf{b}_j$ **spatial patterns** (dynamic modes)
+- $\omega_j$ **temporal characteristics** (continuous time eigenvalues)
+- $\phi_j$ Koopman eigenfunctions
 
 ---
 
-## Koopman Spectral Analysis
-
-In the notebook, the fitted Koopman matrix is analyzed through
-
-$$
-\mathbf{A} := \mathbf{K}.
-$$
-
-We compute its right eigenvectors and eigenvalues:
-
-$$
-\mathbf{A}\mathbf{V} = \mathbf{V}\mathbf{\Lambda},
-\qquad
-\mathbf{\Lambda} = \mathrm{diag}(\lambda_1, \ldots, \lambda_r).
-$$
-
-- $\lambda_j$ are discrete-time Koopman eigenvalues
-- $\omega_j = \tau^{-1}\log(\lambda_j)$ are continuous-time eigenvalues
-- This is exactly the `eigvals, eigvecs_right = np.linalg.eig(A)` step in the notebook.
-
----
-
-## Koopman Eigenfunctions
-
-For $\psi_{k+1} = \psi_k\mathbf{A}$, the Koopman eigenfunctions are
-
-$$
-\phi_j(\mathbf{x}) = \psi(\mathbf{x})\,\mathbf{v}_j.
-$$
-
-On the training snapshots, stacking the eigenvectors into $\mathbf{V}$ gives
-
-$$
-\mathbf{\Phi}(X) = \mathbf{\Psi}_X\mathbf{V}.
-$$
-
-- The notebook computes this as `psi_train @ eigvecs_right`.
-- These coordinates show how each spectral component evolves along the trajectory.
-
----
-
-## Koopman Dynamic Modes
-
-The decoder maps observables back to the state space:
-
-$$
-\hat{\mathbf{x}} = \psi(\mathbf{x})\,\mathbf{B}.
-$$
-
-Changing to the eigenvector basis gives
-
-$$
-\hat{\mathbf{x}} = \mathbf{\Phi}(\mathbf{x})\,\mathbf{M},
-\qquad
-\mathbf{M} = \mathbf{V}^{-1}\mathbf{B}.
-$$
-
-The columns of $\mathbf{M}^{\top}$ are the Koopman dynamic modes in the original state coordinates.
-
-- This is the notebook step `modal_decoder = np.linalg.solve(eigvecs_right, koop_model.B_)`.
-- Then `dynamic_modes = modal_decoder.T` stores the state-space modes columnwise.
-
----
+<!-- _class: small -->
 
 ## Koopman Mode Decomposition
 
-Putting the fitted operator, eigenfunctions, and decoder together gives
+<img src="figures/koopman_concept.pdf" style="display:block; width:60%; margin:0 auto;" />
+
+---
+
+<!-- _class: small -->
+
+## Koopman Mode Decomposition (continued)
+
+**Koopman operator** (denoted $\mathcal{K}_\tau$) ([Koopman 1931](https://www.pnas.org/doi/pdf/10.1073/pnas.17.5.315)):
 
 $$
-\hat{\mathbf{x}}_{k+s} = \psi(\mathbf{x}_k)\,\mathbf{A}^s\,\mathbf{B}
-= \sum_{j=1}^r \lambda_j^s\,\phi_j(\mathbf{x}_k)\,\mathbf{b}_j.
+\mathcal{K}_{\tau}[\psi_m](\mathbf{x}(t))
+=
+\psi_m\bigl(\mathcal{F}_{\tau}\mathbf{x}(t)\bigr)
+=
+\psi_m\bigl(\mathbf{x}(t+\tau)\bigr)
 $$
 
-- $\phi_j(\mathbf{x})$ are Koopman eigenfunctions
-- $\mathbf{b}_j$ are dynamic modes in the original state space
-- $\lambda_j$ controls growth, decay, and oscillation
+**Koopman mode decomposition** ([Rowley et al. 2009](https://www.cambridge.org/core/journals/journal-of-fluid-mechanics/article/abs/spectral-analysis-of-nonlinear-flows/311041E1027AE7FEE7DDA36AC9AD4270), [Mezić 2013](https://mgroup.me.ucsb.edu/sites/default/files/publications/mezic_-_2013_-_analysis_of_fluid_flows_via_spectral_properties_of_the_koopman_operator.pdf)):
+
+$$
+\mathbf{x}(t) = \sum_{j=1}^r \mathbf{b}_j e^{\omega_j t}\,\phi_j(\mathbf{x}(0))
+$$
+
+- $\mathbf{b}_j$ **spatial patterns** (dynamic modes)
+- $\omega_j$ **temporal characteristics** (continuous time eigenvalues)
+- $\phi_j$ **scaling** (Koopman eigenfunctions)
+
+Eigenfunction relation used implicitly:
+
+$$
+\mathcal{K}_{\tau}[\phi_j] = e^{\omega_j\tau}\,\phi_j
+$$
+
+---
+
+<!-- _class: small -->
+
+## Kernel Koopman Mode Decomposition ([Williams et al. 2015](https://arxiv.org/pdf/1411.2260), [Klus et al. 2017](https://arxiv.org/pdf/1712.01572))
+
+- Embed states into a Reproducing Kernel Hilbert Space (RKHS), denoted $\mathcal{H}$
+- Let $\boldsymbol{\psi}:\mathbb{R}^M\to\mathcal{H}$ be the feature map for some kernel $k(\cdot,\cdot)$
+- Define the snapshot feature matrices:
+
+$$
+\boldsymbol{\Psi}_{\mathbf{X}}
+=
+\bigl[\boldsymbol{\psi}(\mathbf{x}(1))\,\cdots\,\boldsymbol{\psi}(\mathbf{x}(T-\tau))\bigr]
+$$
+
+$$
+\boldsymbol{\Psi}_{\mathbf{X}'}
+=
+\bigl[\boldsymbol{\psi}(\mathbf{x}(\tau+1))\,\cdots\,\boldsymbol{\psi}(\mathbf{x}'(T))\bigr]
+$$
+
+---
+
+<!-- _class: small -->
+
+## Kernel Koopman Mode Decomposition (continued)
+
+- Seek finite-dimensional Koopman operator estimate $\tilde{\mathbf{K}}$, found via kernel Gram matrices:
+
+$$
+\mathbf{K}_{\mathbf{X}} = \boldsymbol{\Psi}_{\mathbf{X}}^{\top}\boldsymbol{\Psi}_{\mathbf{X}},
+\quad
+\mathbf{K}_{\mathbf{X}',\mathbf{X}} = \boldsymbol{\Psi}_{\mathbf{X}'}^{\top}\boldsymbol{\Psi}_{\mathbf{X}}
+$$
+
+---
+
+<!-- _class: small -->
+
+## Kernel Koopman Mode Decomposition
+
+- Using the eigendecomposition $\mathbf{K}_{\mathbf{X}} = \mathbf{Q}\mathbf{\Sigma}^2\mathbf{Q}^{\top}$
+- The finite-dimensional Koopman operator estimate is
+
+$$
+\tilde{\mathbf{K}} = \mathbf{\Sigma}^{-1}\mathbf{Q}^{\top}\mathbf{K}_{\mathbf{X}',\mathbf{X}}\mathbf{Q}\mathbf{\Sigma}^{-1}
+$$
+
+- Eigenvalue decomposition $\tilde{\mathbf{K}}\mathbf{W} = \mathbf{W}\mathbf{\Lambda}$
+
+---
+
+<!-- _class: small -->
+
+## Kernel Koopman Mode Decomposition (continued)
+
+| Name | Definition |
+|:--|:--|
+| Eigenfunctions of $\mathbf{X}$ | $\mathbf{\Phi} = \mathbf{K}_{\mathbf{X}}\,\mathbf{Q}\,\mathbf{\Sigma}^{\dagger}\,\mathbf{W}$ |
+| Koopman modes | $\mathbf{B} = \mathbf{X}\mathbf{Q}^{\top}\mathbf{\Sigma}^{\dagger}\mathbf{W}^{-1}$ |
 
 ---
 
