@@ -58,22 +58,25 @@ section {
 
 ## Dynamical System
 
-A dynamical system is a **mathematical object** defined by a state space $M$ and an operator $\varphi_\tau$ defining evolution of any initial state in $M$ over time $\tau >0$
+A dynamical system is a **mathematical object** defined by a state space $M$ and an operator $\varphi_\tau$ defining evolution of any initial state in $M$ over time $\tau > 0$
 
 <br>
 
-<div class="columns">
-<div>
+<div style="display: flex; gap: 2rem; align-items: flex-start;">
+
+
+  <div style="flex: 1; font-size: 0.95em;">
 
 **Yes:**
 - Ideal pendulum with dissipation
-- Two-body gravitational system
+- Two-body gravitational system 
 - Earth system model MPI-ESM
 - ODE: $\dot{\mathbf{x}}=\mathbf{f}(\mathbf{x})$
 - ChatGPT
 
-</div>
-<div>
+  </div>
+
+  <div style="flex: 1; text-align: left; font-size: 0.95em;">
 
 **No:**
 - Image / Video
@@ -82,14 +85,24 @@ A dynamical system is a **mathematical object** defined by a state space $M$ and
 - Earth climate system
 - Human brain
 
-</div>
+  </div>
+
+
 </div>
 
 ---
 
+
+
 ## Dynamical System
 
-Dynamical system is a **mathematical object** defined by a state space $M$ and an operator $\varphi_\tau$ defining evolution of any initial state in $M$ over time $\tau \in T$:
+Dynamical system is a **mathematical object** defined by a state space $M$ and an operator $\varphi_\tau$ defining evolution of any initial state in $M$ over time $\tau >0$:
+
+<br>
+
+<div style="display: flex; gap: 2rem; align-items: flex-start;">
+
+<div style="flex: 3; text-align: left;">
 
 - state space $M$
 
@@ -99,6 +112,15 @@ Dynamical system is a **mathematical object** defined by a state space $M$ and a
 
 - cocycle property $\varphi_{\tau_1+\tau_2} = \varphi_{\tau_2} \circ \varphi_{\tau_1}$
 
+</div>
+<div style="flex: 1; text-align: left;">
+
+ <img src="figures/Dynamical_system.png" style="width: 100%;">
+
+</div>
+</div>
+
+
 ---
 
 ## Dynamical System: example
@@ -106,13 +128,29 @@ Dynamical system is a **mathematical object** defined by a state space $M$ and a
 1st order ordinary differential equation (ODE) / flow: 
 $$\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x})$$
 
+<br>
+
+<div style="display: flex; gap: 2rem; align-items: flex-start;">
+
+<div style="flex: 3; text-align: left;">
+
 - state space $M=\mathbb{R}^d$
 
-- evolution operator:
+- evolution operator over time $\tau$:
 
   $\mathbf{x}(t_0+\tau)=\mathbf{x}(t_0)+\int\limits_{t_0}^{t_0+\tau}\mathbf{f}(\mathbf{x}(t')) d t'$
 
-- cocycle property $\varphi_{\tau_1+\tau_2} = \varphi_{\tau_2} \circ \varphi_{\tau_1}$  (fulfilled)
+- cocycle property $\varphi_{\tau_1+\tau_2} = \varphi_{\tau_2} \circ \varphi_{\tau_1}$  (check!)
+
+
+</div>
+<div style="flex: 1; text-align: left;">
+
+ <img src="figures/Dynamical_system.png" style="width: 100%;">
+
+</div>
+</div>
+
 
 ---
 
@@ -127,35 +165,63 @@ $$\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x})$$
 
 ## Dynamical System: discrete time
 
-A map:
+A 1-step map:
 $$\mathbf{x}_{t+1} = \mathbf{F}(\mathbf{x}_t)$$
+
+
+
+<div style="display: flex; gap: 2rem; align-items: flex-start;">
+
+<div style="flex: 3; text-align: left;">
 
 - state space $M=\mathbb{R}^d$
   
-- evolution operator: 
+- evolution operator over $\tau$ steps: 
    
   $\mathbf{x}_{t+\tau}=\mathbf{F}(\ldots(\mathbf{F}(\mathbf{x}_t)))=\mathbf{F}^{(\tau)}(\mathbf{x}_t)$
 
-- cocycle property $\varphi_{\tau_1+\tau_2} = \varphi_{\tau_2} \circ \varphi_{\tau_1}$  (fulfilled)
+- cocycle property $\varphi_{\tau_1+\tau_2} = \varphi_{\tau_2} \circ \varphi_{\tau_1}$  (check!)
 
+
+</div>
+<div style="flex: 1; text-align: left;">
+
+ <img src="figures/Dynamical_system.png" style="width: 100%;">
+
+</div>
+</div>
 
 ---
 
 ## Dynamical System: discrete time
 
-A map:
+A 1-step map:
 $$\mathbf{x}_{t+1} = \mathbf{F}(\mathbf{x}_t)$$
+
+<div style="display: flex; gap: 2rem; align-items: flex-start;">
+
+<div style="flex: 3; text-align: left;">
 
 - state space $M=\mathbb{R}^d$
   
-- evolution operator: 
+- evolution operator over $\tau$ steps: 
    
-  $\mathbf{x}_{t_0+\tau}=\mathbf{F}(...(\mathbf{F}(\mathbf{x}_{t_0}))=\mathbf{F}^{(\tau)}(\mathbf{x}_{t_0})$
+  $\mathbf{x}_{t+\tau}=\mathbf{F}(\ldots(\mathbf{F}(\mathbf{x}_t)))=\mathbf{F}^{(\tau)}(\mathbf{x}_t)$
 
-- cocycle property $\varphi_{\tau_1+\tau_2} = \varphi_{\tau_2} \circ \varphi_{\tau_1}$  (fulfilled)
-  
-Example: 
-ODE discretization   $\mathbf{F}(\mathbf{x}(t_0)) = \mathbf{x}(t_0)+\int\limits_{t_0}^{t_0+\Delta t}\mathbf{f}(\mathbf{x}(t')) d t'$
+- cocycle property $\varphi_{\tau_1+\tau_2} = \varphi_{\tau_2} \circ \varphi_{\tau_1}$  (check!)
+
+
+</div>
+<div style="flex: 1; text-align: left;">
+
+ <img src="figures/Dynamical_system.png" style="width: 100%;">
+
+</div>
+</div>
+
+Example:
+Define 1-step $\mathbf{F}$ as the result of ODE forward integration over time step $\Delta t$
+  $~~~~~~~~~~~~~~~~~~~~~~~~~~~~\mathbf{F}(\mathbf{x}(t_0)) := \mathbf{x}(t_0)+\int\limits_{t_0}^{t_0+\Delta t}\mathbf{f}(\mathbf{x}(t')) d t'$
 
 ---
 
@@ -176,7 +242,7 @@ $$\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x})$$
 1st order ordinary differential equation (ODE) / flow: 
 $$\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x})$$
 
-- continuous or discrete time?
+- **continuous** or discrete time?
 
 - **deterministic** or stochastic?
 
@@ -189,9 +255,9 @@ $$\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x})$$
 1st order ordinary differential equation (ODE) / flow: 
 $$\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x})$$
 
-- continuous or discrete time?
+- **continuous** or discrete time?
 
-- deterministic or stochastic?
+- **deterministic** or stochastic?
 
 - **autonomous** or non-autonomous?
 
@@ -222,8 +288,10 @@ $$x_{t+1} = \mu x_t, \quad \mu \in \mathbb{R}$$
 - evolution operator: $\varphi_\tau(x) = \mu^{\tau} x$
 - behavior determined by $|\mu|$: 
   - $|\mu|<1$: decay 
+  - $|\mu|=1$: constant 
   - $|\mu|>1$: growth
-
+- Link to continuous ODE discretized with the step $\Delta t$: $\mu=e^{\lambda \Delta t}$
+  
 ---
 
 ## Linear Dynamical System (2D) 
@@ -300,7 +368,7 @@ Switch to original basis:
 ## Trajectory
 
 - A **trajectory** (orbit) is a curve $t \mapsto \mathbf{x}(t) \in M$ satisfying:
-$$\mathbf{x}(t) = \varphi_{t-t_0}(\mathbf{x}(t_0)), \qquad t \geq t_0$$
+$$\mathbf{x}(t_2) = \varphi_{t_2-t_1}(\mathbf{x}(t_1)), \qquad t_2 \geq t_1$$
 
 - The **phase portrait** is the collection of all trajectories in $M$. It reveals the global geometry of the dynamical system
 
@@ -345,11 +413,11 @@ $$\dot{\mathbf{x}} = A\mathbf{x}, \quad A \in \mathbb{R}^{2\times 2}, \quad \mat
 - solution: $\mathbf{x}(t) = e^{At}\mathbf{x}(0)$
 - behavior governed by eigenvalues $\lambda_{1,2}$ of $A$
 
-Example — harmonic oscillator:
+Example — classic linear oscillator:
 $$A = \begin{pmatrix} 0 & 1 \\ -\omega^2 & -2\gamma \end{pmatrix}$$
 
 - $\gamma = 0$: pure oscillation (non-hyperbolic), eigenvalues $\lambda = \pm i\omega$
-- $\gamma > 0$: damped oscillation, $\text{Re}(\lambda) < 0$
+- $\gamma > 0$: damped oscillation (stable), $\text{Re}(\lambda) < 0$
 
 ---
 
@@ -485,6 +553,8 @@ $$\dot{\boldsymbol{\xi}} = D\mathbf{f}(\mathbf{x}^*)\,\boldsymbol{\xi} + \mathca
 
 **Hartman–Grobman theorem**: if $J$ has no eigenvalues with $\text{Re}(\lambda)=0$, the nonlinear flow is topologically equivalent to the linear flow $\dot{\boldsymbol{\xi}} = J\boldsymbol{\xi}$ near $\mathbf{x}^*$
 
+### **Stability is determined by the eigenvalues of Jacobian**
+
 ---
 
 ## Nonlinear Dynamical System (Lorenz-63)
@@ -506,6 +576,17 @@ $$J = D\mathbf{f} = \begin{pmatrix} -\sigma & \sigma & 0 \\ \rho - z & -1 & -x \
 
 ---
 
+## Nonlinear Dynamical System (Lorenz-63)
+
+<div style="flex: 2; text-align: center;">
+
+
+ <img src="figures/lorenz63_stability.png" style="width: 68%;">
+
+</div>
+
+
+---
 
 ## Nonlinear Dynamical System (Lorenz-63)
 
@@ -514,6 +595,8 @@ $$J = D\mathbf{f} = \begin{pmatrix} -\sigma & \sigma & 0 \\ \rho - z & -1 & -x \
 $$\dot{x} = \sigma(y - x)~~~~~~~$$
 $$\dot{y} = x(\rho - z) - y$$
 $$\dot{z} = xy - \beta z~~~~~~~~$$
+
+#### **Where do the trajectories go if all equilibrium points are unstable?**
 
 The system is globally stable:
 
@@ -533,6 +616,31 @@ $$\varphi_t(\mathbf{x}) \to \mathcal{A} \quad \text{as } t \to \infty \quad \for
 3. There is no non-empty subset of $\mathcal{A}$ satisfying both properties above
 
 The **basin of attraction** $B(\mathcal{A})$ is the set of all $\mathbf{x} \in M$ whose trajectories converge to $\mathcal{A}$.
+
+---
+
+## Nonlinear Dynamical System (Lorenz-63)
+
+<br>
+
+<br>
+
+
+<div style="display: flex; gap: 0rem; align-items: flex-start;">
+
+<div style="flex: 1; text-align: center;">
+
+ <img src="figures/lorenz63_rho10.png" style="width: 100%;">
+
+</div>
+
+<div style="flex: 1; text-align: center;">
+
+ <img src="figures/lorenz63_rho150.0.png" style="width: 100%;">
+
+</div>
+
+</div>
 
 ---
 
@@ -568,6 +676,25 @@ Lorenz-63: $\sigma_1 \approx 0.91,\ \sigma_2 = 0,\ \sigma_3 \approx -14.57$
 
 ---
 
+## Nonlinear Dynamical System (Lorenz-63)
+
+
+
+
+<div style="display: flex; gap: 0rem; align-items: flex-start;">
+
+
+
+<div style="flex: 1; text-align: center;">
+
+ <img src="figures/lorenz63_rho28.png" style="width: 60%;">
+
+</div>
+
+</div>
+
+---
+
 
 <div style="height:70vh; display:flex; align-items:center; justify-content:center;">
 
@@ -577,18 +704,52 @@ Lorenz-63: $\sigma_1 \approx 0.91,\ \sigma_2 = 0,\ \sigma_3 \approx -14.57$
 
 ---
 
-## Dynamical systems meet data
+## Dynamical systems meets data
 
 So far: dynamical system is defined on a state space $M$, but in practice **we do not know $M$** or $\varphi$, they are latent (hidden).
 
+<br>
+
+<div style="display: flex; gap: 2rem; align-items: flex-start;">
+
+<div style="flex: 3; text-align: left;">
+
+
+
 We only observe some variables:
-$$y(t) = h(\mathbf{x}(t)), \qquad h: M \to \mathbb{R}^k$$
+$$y(t) = g(\mathbf{x}(t)), \qquad g: M \to \mathbb{R}^k$$
 
-which may or may not represent the true state, e.g. we measure temperature, but the governing equations are for pressure, velocity, density, ...
+which may or may not represent the true state, 
+e.g. we measure temperature, but the governing equations are for pressure, velocity, density, ...
+</div>
 
-**Key questions:**
+<div style="flex: 2; text-align: left;">
+
+<br>
+
+ <img src="figures/Dynamical_system_model_2.png" style="width: 100%;">
+
+</div>
+</div>
+
+
+
+
 - Can we **reconstruct** the dynamics from observations alone?
+
 - Can we find a **linear representation** of nonlinear dynamics?
+
+
+
+---
+
+## State space reconstruction: Whitney embedding theorem
+
+**Whitney embedding theorem** (1944): for any smooth $d$-dimensional manifold $M$, a **generic** smooth map $g: M \to \mathbb{R}^{2d+1}$ is an embedding (diffeomorphism)
+
+- "Generic" means: almost any smooth function works, non-generic cases form a set of measure zero
+- Diffeomorphisms preserve all dynamical properties: topology of trajectories, Lyapunov exponents, attractor structure, i.e. gives an **equivalent dynamical system** in $\mathbb{R}^{2d+1}$
+
 
 ---
 
@@ -603,6 +764,20 @@ which may or may not represent the true state, e.g. we measure temperature, but 
 
 ---
 
+
+## State space reconstruction: Takens embedding theorem
+
+**Takens embedding theorem** (1981): for a generic smooth system $\varphi_\tau$ on a $\leq d$-dimensional attractor $\mathcal{A}$ and a generic scalar observation $g: M \to \mathbb{R}$, the **delay coordinate**:
+
+$$\mathbf{y}(t) = \left(g(\mathbf{x}(t)),\ g(\varphi_\tau(\mathbf{x}(t))),\ g(\varphi_{2\tau}(\mathbf{x}(t))),\ \ldots,\ g(\varphi_{2d\tau}(\mathbf{x}(t)))\right)$$
+
+is an **embedding** (diffeomorphism) of $\mathcal{A}$ in $\mathbb{R}^{2d+1}$ for any $\tau$
+
+- Practically, dynamics can be reconstructed from a **single scalar time series** $g(\mathbf{x}(t_0)), g(\mathbf{x}(t_1)), \ldots$ 
+
+
+
+---
 
 ## State space reconstruction: Takens embedding theorem
 
@@ -643,7 +818,7 @@ $$\mathcal{K}^\tau g = g \circ \varphi_\tau, \qquad \text{i.e.} \qquad (\mathcal
 - $\mathcal{K}^\tau$ is an evolution operator for observables (functions of the state): $g(\mathbf{x}(t+\tau)) = (\mathcal{K}^\tau g)(\mathbf{x}(t))$
 - $\mathcal{K}^\tau$ is **linear**: $\mathcal{K}^\tau(\alpha g + \beta f) = \alpha\, \mathcal{K}^\tau g + \beta\, \mathcal{K}^\tau f$ 
 - Acts on an **infinite-dimensional** space
-- If $G$ is a Hilbert space with inner product, then we can define a complete basis $\{\phi_k\}$, decomposition along the basis $g = \sum_k \langle g, \phi_k \rangle\, \phi_k$, eigenvalues, eigenmodes ... 
+- If $G$ is a space with inner product (Hilbert space), then we can define a complete basis $\{\psi_k\}$, decomposition along the basis $g = \sum_k \langle g, \psi_k \rangle\, \psi_k$, eigenvalues, eigenmodes ... 
 
 ---
 
