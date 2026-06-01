@@ -20,4 +20,4 @@ pip install -r requirements.txt
 Will be added later
 
 ## 📜 License
-Will be added later
+[MIT LICENSE](LICENSE)
