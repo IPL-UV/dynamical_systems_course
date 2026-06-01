@@ -65,7 +65,7 @@ A dynamical system is a **mathematical object** defined by a state space $M$ and
 <div style="display: flex; gap: 2rem; align-items: flex-start;">
 
 
-  <div style="flex: 1; font-size: 0.95em;">
+  <div style="flex: 1; font-size: 0.85em;">
 
 **Yes:**
 - Ideal pendulum with dissipation
@@ -76,7 +76,7 @@ A dynamical system is a **mathematical object** defined by a state space $M$ and
 
   </div>
 
-  <div style="flex: 1; text-align: left; font-size: 0.95em;">
+  <div style="flex: 1; text-align: left; font-size: 0.85em;">
 
 **No:**
 - Image / Video
@@ -87,6 +87,13 @@ A dynamical system is a **mathematical object** defined by a state space $M$ and
 
   </div>
 
+</div>
+
+
+<br>
+<div style="height:70vh; display:flex; align-items:center; justify-content:center;font-size: 0.99em;">
+
+ **Dynamical systems provide a universal language to bridge models and real world**
 
 </div>
 
@@ -486,7 +493,7 @@ $$\sigma_i = \lim_{t\to\infty} \frac{1}{t} \ln \frac{\|\boldsymbol{\delta}_i(t)\
 
 ---
 
-## Nonlinear Dynamical System (Lorenz-63)
+## Nonlinear dynamical system (Lorenz-63)
 
 Atmospheric convection toy model:
 
@@ -503,7 +510,7 @@ $$\dot{z} = xy - \beta z~~~~~~~~$$
 
 ---
 
-## Nonlinear Dynamical System (Lorenz-63)
+## Nonlinear dynamical system (Lorenz-63)
 
 <br>
 
@@ -518,7 +525,7 @@ How to find fixed points (equilibrium states)?
 
 ---
 
-## Nonlinear Dynamical System (Lorenz-63)
+## Nonlinear dynamical system (Lorenz-63)
 
 <br>
 
@@ -557,7 +564,7 @@ $$\dot{\boldsymbol{\xi}} = D\mathbf{f}(\mathbf{x}^*)\,\boldsymbol{\xi} + \mathca
 
 ---
 
-## Nonlinear Dynamical System (Lorenz-63)
+## Nonlinear dynamical system (Lorenz-63)
 
 
 $$\dot{x} = \sigma(y - x)~~~~~~~$$
@@ -576,7 +583,7 @@ $$J = D\mathbf{f} = \begin{pmatrix} -\sigma & \sigma & 0 \\ \rho - z & -1 & -x \
 
 ---
 
-## Nonlinear Dynamical System (Lorenz-63)
+## Nonlinear dynamical system (Lorenz-63)
 
 <div style="flex: 2; text-align: center;">
 
@@ -588,7 +595,7 @@ $$J = D\mathbf{f} = \begin{pmatrix} -\sigma & \sigma & 0 \\ \rho - z & -1 & -x \
 
 ---
 
-## Nonlinear Dynamical System (Lorenz-63)
+## Nonlinear dynamical system (Lorenz-63)
 
 <br>
 
@@ -619,7 +626,7 @@ The **basin of attraction** $B(\mathcal{A})$ is the set of all $\mathbf{x} \in M
 
 ---
 
-## Nonlinear Dynamical System (Lorenz-63)
+## Nonlinear dynamical system (Lorenz-63)
 
 <br>
 
@@ -676,7 +683,7 @@ Lorenz-63: $\sigma_1 \approx 0.91,\ \sigma_2 = 0,\ \sigma_3 \approx -14.57$
 
 ---
 
-## Nonlinear Dynamical System (Lorenz-63)
+## Nonlinear dynamical system (Lorenz-63)
 
 
 
