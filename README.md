@@ -1,4 +1,4 @@
-# Course: Dynamical systems meet data
+# Course: Dynamical systems meets data
 
 This repository contains the course materials for dynamical systems course at the Image and Signal Processing Group, University of Valencia.
 
