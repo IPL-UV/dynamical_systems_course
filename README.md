@@ -11,6 +11,13 @@ Ensure you have Python 3.8+ installed. The dependencies to install are in the re
 pip install -r requirements.txt
 ```
 
+Clone the repository:
+```bash
+git clone https://github.com/IPL-UV/dynamical_systems_course
+```
+
+Play!
+
 ## 🛠 Features
 - **Dynamical system theory quick overview** with linear and nonlinear **Lorenz 63** examples to explain basic concepts
 - **Dynamic Mode decomposition** and **Koopman Operators** 
