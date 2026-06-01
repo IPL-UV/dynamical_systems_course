@@ -19,74 +19,6 @@ footer: Dynamic Mode Decomposition / Koopman Mode Decomposition
 
 ---
 
-## Dynamical Systems
-
-A **dynamical system** describes how a state $\mathbf{x}(t)$ evolves over time $t$ according to a fixed rule.
-
-$$
-\text{Continuous-time:} \quad \frac{d\mathbf{x}}{dt} = g(\mathbf{x}(t)) \qquad
-\text{Discrete-time:} \quad \mathbf{x}(t+\tau) = f(\mathbf{x}(t))
-$$
-
-- $\mathbf{x}(t) \in \mathbb{R}^n$: the state at time $t$
-- $f, g$: a (possibly nonlinear) update rule
-- Timeseries $\mathbf{x}(t)$
-- Goal: Decompose the system into state space and temporal patterns, thus reducing temporal and state space dimensions.
-
-
----
-
-## The Simplest Dynamical System
-
-First order, linear, ordinary differential equation.
-$$
-\frac{d\mathbf{x}}{dt} = \lambda \mathbf{x}(t)
-$$
-
-Closed form solution
-$$
-\mathbf{x}(t) = e^{\lambda t} \mathbf{x}(0)
-$$
-
-Discrete time formulation.
-$$
-\mathbf{x}(t+\tau) = e^{\lambda \tau} \mathbf{x}(t)
-$$
-
----
-
-## The Simplest Dynamical System
-
-$$
-\frac{d\mathbf{x}}{dt} = \lambda \mathbf{x}(t)
-$$
-- $\lambda=0$ $\implies$ no change
-- $\lambda>0$ $\implies$ exponential growth
-- $\lambda<0$ $\implies$ exponential decay
-
----
-
-## Linear Dynamical System
-
-System of first order, linear, ordinary differential equation.
-$$
-\frac{d\mathbf{x}}{dt} = \mathbf{L} \mathbf{x}(t)
-$$
-
-Closed form solution
-$$
-\mathbf{x}(t) = e^{\mathbf{L} t} \mathbf{x}(0)
-$$
-
-Discrete time formulation.
-$$
-\mathbf{x}(t+\tau) = e^{\mathbf{L} \tau} \mathbf{x}(t) = \mathbf{A} \mathbf{x}(t)
-$$
-
-Solutions evolve through powers of $\mathbf{A}$: eigenvalues/eigenvectors govern behavior.
-
----
-
 ## Dynamic Mode Decomposition
 
 Assume that the data is sampled from the timeseries:
@@ -97,15 +29,15 @@ $$
 
 **Decompose the system** into spatial and temporal patterns.
 
-Analyzing $\mathbf{A}$ results in the DMD (\citep{schmid2010dynamic}):
+Analyzing $\mathbf{A}$ results in the DMD ([Schmid 2010](https://www.cambridge.org/core/journals/journal-of-fluid-mechanics/article/abs/dynamic-mode-decomposition-of-numerical-and-experimental-data/AA4C763B525515AD4521A6CC5E10DBD4)):
 
 $$
-\mathbf{x}(t) = \sum_{j=1}^k \boldsymbol{\phi}_j e^{\omega_j t} b_j
+\mathbf{x}(t) = \sum_{j=1}^k \mathbf{b}_j e^{\omega_j t} \phi_j
 $$
 
-- $\boldsymbol{\phi}_j \in \mathbb{C}^n$ **feature patterns** (dynamic modes)
+- $\mathbf{b}_j \in \mathbb{C}^n$ **feature patterns** (dynamic modes)
 - $\omega_j \in \mathbb{C}$ **temporal characteristics** (continuous time eigenvalues)
-- $b_j \in \mathbb{R}$ scalar loadings (a.k.a. amplitudes)
+- $\boldsymbol{\phi} \in \mathbb{R}^k$ scalar loadings (a.k.a. amplitudes)
 
 ---
 
@@ -125,17 +57,22 @@ $$
 \mathbf{x}(t) = \mathbf{A}^{m}\mathbf{x}(0)
 $$
 
-If $\mathbf{A}\mathbf{W}=\mathbf{W}\mathbf{\Lambda}$ and $\mathbf{x}(0)=\mathbf{W}\mathbf{b}$, then
+If $\mathbf{A}\mathbf{W}=\mathbf{W}\mathbf{\Lambda}$ and $\mathbf{x}(0)=\mathbf{W}\boldsymbol{\phi} $, then
 
 $$
 \mathbf{x}(t)
 =
-\mathbf{W}\mathbf{\Lambda}^{m}\mathbf{b}
+\mathbf{W}\mathbf{\Lambda}^{m}\boldsymbol{\phi}
 =
-\sum_{j=1}^{k}\boldsymbol{\phi}_j\lambda_j^{t/\tau}b_j
+\sum_{j=1}^{k}\mathbf{b}_j\lambda_j^{t/\tau} \phi_j
 =
-\sum_{j=1}^{k}\boldsymbol{\phi}_j e^{\omega_j t} b_j
+\sum_{j=1}^{k}\mathbf{b}_j e^{\omega_j t} \phi_j
 $$
+
+Notes: 
+- We can find $\phi$ at any point in the state space, so we can write $\boldsymbol{\phi}(\mathbf{x})= \mathbf{W}^\dagger \mathbf{x}$.
+- We call $e^{\omega_j t} \phi_j$ the temporal "dynamics" of $\mathbf{b}_j$
+- We can analyze $\phi(t) = \boldsymbol{\phi}(\mathbf{x}(t)) $ over time 
 
 ---
 
