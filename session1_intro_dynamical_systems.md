@@ -17,7 +17,7 @@ section {
 }
 </style>
 
-## Dynamical Systems Meet Data: <br> DMD, Koopman, and Reduced Representations
+## Dynamical Systems Meets Data: <br> DMD, Koopman, and Reduced Representations
 
 ### Andrei Gavrilov and Nathan Mankovich
 
@@ -25,7 +25,7 @@ section {
 ![w:150](figures/ai4pex_logo.png)
 
 ---
-## Dynamical Systems Meet Data
+## Dynamical Systems Meets Data
 
 ### **Part 1: DMD, Koopman, and Reduced Representations**
 
@@ -40,7 +40,20 @@ section {
 
 <br>
 
+<div style="height:70vh; display:flex; align-items:center; justify-content:center;">
+
 #### Please do ask questions!
+
+</div>
+
+---
+
+<div style="height:70vh; display:flex; align-items:center; justify-content:center;">
+
+# What is a dynamical system?
+
+</div>
+
 ---
 
 ## Dynamical System
@@ -397,6 +410,14 @@ $$\sigma_i = \lim_{t\to\infty} \frac{1}{t} \ln \frac{\|\boldsymbol{\delta}_i(t)\
 
 ---
 
+<div style="height:70vh; display:flex; align-items:center; justify-content:center;">
+
+# Nonlinear dynamical systems, attractors, chaos
+
+</div>
+
+---
+
 ## Nonlinear Dynamical System (Lorenz-63)
 
 Atmospheric convection toy model:
@@ -541,9 +562,18 @@ $$\sigma_i = \lim_{t\to\infty} \frac{1}{t} \ln \frac{\|\boldsymbol{\delta}_i(t)\
 
 - $\sigma_{\max} < 0$: all perturbations decay, **stable fixed point**
 - $\sigma_{\max} = 0$: there is neutral direction (e.g. along trajectory in a limit cycle)
-- $\sigma_{\max} > 0$: **sensitive dependence on initial conditions — chaos**
+- $\sigma_{\max} > 0$: **sensitive dependence on initial conditions = chaos**
 
 Lorenz-63: $\sigma_1 \approx 0.91,\ \sigma_2 = 0,\ \sigma_3 \approx -14.57$
+
+---
+
+
+<div style="height:70vh; display:flex; align-items:center; justify-content:center;">
+
+# Dynamical systems meets data
+
+</div>
 
 ---
 
@@ -564,7 +594,7 @@ which may or may not represent the true state, e.g. we measure temperature, but 
 
 ## State space reconstruction: Whitney embedding theorem
 
-**Whitney embedding theorem** (1944): for any smooth $d$-dimensional manifold $M$, a **generic** smooth map $h: M \to \mathbb{R}^{2d+1}$ is an embedding (diffeomorphism)
+**Whitney embedding theorem** (1944): for any smooth $d$-dimensional manifold $M$, a **generic** smooth map $g: M \to \mathbb{R}^{2d+1}$ is an embedding (diffeomorphism)
 
 - "Generic" means: almost any smooth function works, non-generic cases form a set of measure zero
 - Diffeomorphisms preserve all dynamical properties: topology of trajectories, Lyapunov exponents, attractor structure, i.e. gives an **equivalent dynamical system** in $\mathbb{R}^{2d+1}$
@@ -576,89 +606,80 @@ which may or may not represent the true state, e.g. we measure temperature, but 
 
 ## State space reconstruction: Takens embedding theorem
 
-**Takens embedding theorem** (1981): for a generic smooth system $\varphi_\tau$ on a $\leq d$-dimensional attractor $\mathcal{A}$ and a generic scalar observation $h: M \to \mathbb{R}$, the **delay coordinate**:
+**Takens embedding theorem** (1981): for a generic smooth system $\varphi_\tau$ on a $\leq d$-dimensional attractor $\mathcal{A}$ and a generic scalar observation $g: M \to \mathbb{R}$, the **delay coordinate**:
 
-$$\mathbf{y}(t) = \left(h(\mathbf{x}(t)),\ h(\varphi_\tau(\mathbf{x}(t))),\ h(\varphi_{2\tau}(\mathbf{x}(t))),\ \ldots,\ h(\varphi_{2d\tau}(\mathbf{x}(t)))\right)$$
+$$\mathbf{y}(t) = \left(g(\mathbf{x}(t)),\ g(\varphi_\tau(\mathbf{x}(t))),\ g(\varphi_{2\tau}(\mathbf{x}(t))),\ \ldots,\ g(\varphi_{2d\tau}(\mathbf{x}(t)))\right)$$
 
 is an **embedding** (diffeomorphism) of $\mathcal{A}$ in $\mathbb{R}^{2d+1}$ for any $\tau$
 
-- Practically, dynamics can be reconstructed from a **single scalar time series** $h(\mathbf{x}(t_0)), h(\mathbf{x}(t_1)), \ldots$ 
+- Practically, dynamics can be reconstructed from a **single scalar time series** $g(\mathbf{x}(t_0)), g(\mathbf{x}(t_1)), \ldots$ 
 
-- In contrast, $2d+1$ functions of a single value $h(\mathbf{x})$ are not generic in Whitney's sense, they define a 1D curve in $\mathbb{R}^{2d+1}$, not an embedding of $\mathcal{A}$
+- In contrast, $2d+1$ functions of a single value $g(\mathbf{x})$ are not generic in Whitney's sense, they define a 1D curve in $\mathbb{R}^{2d+1}$, not an embedding of $\mathcal{A}$
 
 ---
 
+## Linear representation: Koopman Operator
 
-## Koopman Operator
+Consider a linear space $G$ of observable functions $g(\mathbf{x})$, $\mathbf{x} \in M$, e.g. $g: M \to \mathbb{C}$
 
-Different question: instead of reconstructing the state, can we find a **linear representation** of nonlinear dynamics?
-
-For a dynamical system $\mathbf{x}(t+\tau) = \varphi_\tau(\mathbf{x}(t))$, the **Koopman operator** $\mathcal{K}^\tau$ acts on **observable functions** $g: M \to \mathbb{C}$:
+For a dynamical system $\mathbf{x}(t+\tau) = \varphi_\tau(\mathbf{x}(t))$, the **Koopman operator** $\mathcal{K}^\tau$ acts on **observable functions** $g \in G$:
 
 $$\mathcal{K}^\tau g = g \circ \varphi_\tau, \qquad \text{i.e.} \qquad (\mathcal{K}^\tau g)(\mathbf{x}) = g(\varphi_\tau(\mathbf{x}))$$
 
-- $\mathcal{K}^\tau$ is a **linear operator** — even if $\varphi_\tau$ is nonlinear
-- Acts on an **infinite-dimensional** function space
-- The price of linearity: infinite-dimensional space
+- $\mathcal{K}^\tau$ is an evolution operator for observable functions: $g(\mathbf{x}(t+\tau)) = (\mathcal{K}^\tau g)(\mathbf{x}(t))$
+- $\mathcal{K}^\tau$ is **linear**: $\mathcal{K}^\tau(\alpha g + \beta f) = \alpha\, \mathcal{K}^\tau g + \beta\, \mathcal{K}^\tau f$
+- Acts on an **infinite-dimensional** space
 
 ---
 
-## Koopman Operator: eigenfunctions
+## Koopman Operator: linear dynamical system for observables
 
-A function $\phi: M \to \mathbb{C}$ is a **Koopman eigenfunction** with eigenvalue $\lambda$ if:
+Consider a linear space $G$ of observables $g(\mathbf{x})$, $\mathbf{x} \in M$, e.g. $g: M \to \mathbb{C}$
 
-$$\mathcal{K}^\tau \phi = e^{\lambda\tau} \phi, \qquad \text{i.e.} \qquad \phi(\varphi_\tau(\mathbf{x})) = e^{\lambda\tau} \phi(\mathbf{x})$$
+For a dynamical system $\mathbf{x}(t+\tau) = \varphi_\tau(\mathbf{x}(t))$, the **Koopman operator** $\mathcal{K}^\tau$ acts on **observables** $g \in G$:
 
-- Eigenfunctions evolve **exactly linearly** along trajectories: $\phi(\mathbf{x}(t)) = e^{\lambda t}\phi(\mathbf{x}(t_0))$
-- Eigenvalues $\lambda$ encode the **frequencies and growth rates** of the dynamics
-- For a stable fixed point: Koopman eigenfunctions are $e^{\lambda_i t}$ — same as linear system eigenmodes
+$$\mathcal{K}^\tau g = g \circ \varphi_\tau, \qquad \text{i.e.} \qquad (\mathcal{K}^\tau g)(\mathbf{x}) = g(\varphi_\tau(\mathbf{x}))$$
 
-If we expand any observable $g = \sum_k c_k \phi_k$, its evolution is:
-$$g(\mathbf{x}(t)) = \sum_k c_k e^{\lambda_k t} \phi_k(\mathbf{x}(t_0))$$
-
-A **linear superposition of modes** — even for a nonlinear system.
+- $\mathcal{K}^\tau$ is an evolution operator for observables (functions of the state): $g(\mathbf{x}(t+\tau)) = (\mathcal{K}^\tau g)(\mathbf{x}(t))$
+- $\mathcal{K}^\tau$ is **linear**: $\mathcal{K}^\tau(\alpha g + \beta f) = \alpha\, \mathcal{K}^\tau g + \beta\, \mathcal{K}^\tau f$ 
+- Acts on an **infinite-dimensional** space
+- If $G$ is a Hilbert space with inner product, then we can define a complete basis $\{\phi_k\}$, decomposition along the basis $g = \sum_k \langle g, \phi_k \rangle\, \phi_k$, eigenvalues, eigenmodes ... 
 
 ---
 
-## Koopman Operator: linear representation of chaos?
+## Koopman operator: linear representation of chaos?
 
-For a **chaotic system**, Koopman eigenfunctions still exist — but:
+- Nonlinear dynamical systems can have chaotic attractors
+- Linear dynamical systems do not
+- Koopman theory claims nonlinear dynamics can be represented linearly
 
-- The Koopman spectrum is **continuous** (not discrete) on the chaotic attractor
-- No finite set of eigenfunctions can exactly represent the dynamics
-- Eigenfunctions may not be smooth or even $L^2$ on the attractor
-
-However, for **practical purposes**:
-
-- A finite-dimensional **approximation** of $\mathcal{K}^\tau$ can capture dominant modes
-- This is the idea behind **Dynamic Mode Decomposition (DMD)**
-- Koopman eigenfunctions provide a **linear coordinate system** in which nonlinear dynamics looks approximately linear — for finite time
-
-**Key insight**: chaos is exponential divergence — but over short times, linear Koopman modes can approximate the dynamics well. This is the foundation of data-driven modeling.
+Paradox?
 
 ---
 
-## Books and References
+## Koopman operator: linear representation of chaos?
+
+- Nonlinear dynamical systems can have chaotic attractors
+- Linear dynamical systems do not
+- Koopman theory claims nonlinear dynamics can be represented linearly
+
+So where did the chaos go?
+- **Into an infinite-dimensional space of observables (functions)**
+- The dynamics become linear, but the spectrum of a linear operator on a function space can be far richer than that of a finite-dimensional matrix. Welcome to functional analysis!
+- In practice, finite Koopman approximation can only predict in finite time
+ - [github.com/IPL-UV/dynamical_systems_course](https://github.com/IPL-UV/dynamical_systems_course)
+
+---
+
+## Take-home messages
+
+- Dynamical systems provide a universal language connecting mathematics, physics, observations, and models
+- Linear systems are simple because eigenvalues tell the whole story
+- Nonlinear systems can produce attractors, bifurcations, and chaos
+- Chaos limits predictability but does not imply randomness
+- Observations can contain enough information to reconstruct hidden dynamics
+- Koopman theory reveals a surprising fact: nonlinear dynamics can be represented by a linear operator 
 
 <br>
 
-- **Strogatz** — *Nonlinear Dynamics and Chaos* (1994) — best introduction, accessible
-- **Kutz et al.** — *Dynamic Mode Decomposition* (2016) — DMD theory and applications, [free online](http://dmdbook.com)
-- **Brunton & Kutz** — *Data-Driven Science and Engineering* (2019) — broader ML+dynamics perspective
-- **Mezić** — *Koopman Operator Theory* (2022) — rigorous treatment of Koopman
-- **Takens** — *Detecting Strange Attractors in Turbulence* (1981) — original paper
-
----
-
-## Dynamical Systems meet data
-
-
-Meeting data: Whitney theorem, Takens theorem, Koopman
-
-Koopman
-
-Chaotic system with linear Koopman?
-
-Chaotic "in finite time"? 
-
-Books?
+- *Next*: DMD, Koopman mode decomposition, reduced representations
