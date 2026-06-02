@@ -56,48 +56,6 @@ section {
 
 ---
 
-## Dynamical System
-
-A dynamical system is a **mathematical object** defined by a state space $M$ and an operator $\varphi_\tau$ defining evolution of any initial state in $M$ over time $\tau > 0$
-
-<br>
-
-<div style="display: flex; gap: 2rem; align-items: flex-start;">
-
-
-  <div style="flex: 1; font-size: 0.85em;">
-
-**Yes:**
-- Ideal pendulum with dissipation
-- Two-body gravitational system 
-- Earth system model MPI-ESM
-- ODE: $\dot{\mathbf{x}}=\mathbf{f}(\mathbf{x})$
-- ChatGPT
-
-  </div>
-
-  <div style="flex: 1; text-align: left; font-size: 0.85em;">
-
-**No:**
-- Image / Video
-- Wall clock with pendulum
-- Air in a chamber
-- Earth climate system
-- Human brain
-
-  </div>
-
-</div>
-
-
-<br>
-<div style="height:70vh; display:flex; align-items:center; justify-content:center;font-size: 0.99em;">
-
- **Dynamical systems provide a universal language to bridge models and real world**
-
-</div>
-
----
 
 
 
@@ -127,6 +85,15 @@ Dynamical system is a **mathematical object** defined by a state space $M$ and a
 </div>
 </div>
 
+<br>
+
+<br>
+
+<div style="height:70vh; display:flex; align-items:center; justify-content:center;font-size: 0.99em;">
+
+ **Dynamical systems provide a universal language to bridge models and real world**
+
+</div>
 
 ---
 
