@@ -1,7 +1,12 @@
 """Koopman operator estimation utilities.
 
 This module provides a scikit-learn style estimator that learns a finite
-dimensional approximation of the Koopman operator from state snapshots.
+dimensional EDMD approximation of a Koopman matrix ``K`` from snapshot data.
+
+Slide notation often uses column-stacked lifted snapshots
+``Psi_X = [psi(x_1), ..., psi(x_N)]`` and ``Psi_Y = [psi(y_1), ..., psi(y_N)]``
+with evolution ``psi_{k+1} = K psi_k``. Internally, this implementation stores
+samples row-wise, so the equivalent update is ``psi_next = psi @ K``.
 """
 
 from __future__ import annotations
@@ -56,6 +61,12 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		Optional seed for reproducible RBF center selection.
 	reg:
 		Optional Tikhonov regularization strength used in least squares.
+
+	Notes
+	-----
+	With row-wise lifted data ``psi_x`` and ``psi_y``, fitting solves
+	``psi_x @ K ~= psi_y``. This is the row-wise equivalent of the
+	column-vector EDMD objective ``min_K ||Psi_Y - K Psi_X||_F``.
 	"""
 
 	def __init__(
@@ -89,6 +100,10 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 
 		If ``Y`` is not provided, consecutive snapshot pairs are inferred from
 		``X`` such that ``(X[:-1], X[1:])`` are used for training.
+
+		The fitted model stores:
+		- ``K_``: Koopman matrix in lifted coordinates.
+		- ``B_``: linear decoder from lifted coordinates to state space.
 		"""
 		X = self._as_2d(X)
 		if Y is None:
@@ -125,10 +140,11 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		psi_x = self._lift(X_train)
 		psi_y = self._lift(Y_train)
 
-		# Solve psi_x @ K ~= psi_y in least-squares form.
+		# Row-wise least-squares fit (equivalent to column-form EDMD):
+		# minimize ||psi_y - psi_x @ K||_F.
 		self.K_ = self._solve_least_squares(psi_x, psi_y)
 
-		# Learn decoder mapping observables back to state space.
+		# Learn decoder B from lifted coordinates back to state space.
 		self.B_ = self._solve_least_squares(psi_x, X_train)
 
 		self.n_observables_ = self.K_.shape[0]
@@ -146,6 +162,9 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 			Number of forward steps. For ``steps=1``, output has shape
 			``(n_samples, n_states)``. For ``steps>1``, output shape is
 			``(n_samples, steps, n_states)``.
+
+		Uses the recursion ``psi_{k+1} = psi_k @ K_`` and decode
+		``x_hat_k = psi_k @ B_``.
 		"""
 		self._check_is_fitted()
 		if steps < 1:
@@ -262,7 +281,7 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		return np.hstack(parts)
 
 	def _solve_least_squares(self, A: np.ndarray, B: np.ndarray) -> np.ndarray:
-		"""Solve min_X ||AX-B|| with optional ridge regularization."""
+		"""Solve ``min_X ||A X - B||_F`` with optional ridge regularization."""
 		if self.reg > 0:
 			gram = A.T @ A
 			rhs = A.T @ B
