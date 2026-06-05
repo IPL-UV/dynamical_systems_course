@@ -3,3 +3,6 @@ notebook
 matplotlib
 numpy
 scipy
+xarray
+cartopy
+netCDF4

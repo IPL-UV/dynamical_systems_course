@@ -57,6 +57,11 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		Whether to include a constant observable.
 	include_state:
 		Whether to append raw state coordinates in polynomial/RBF observables.
+	state_first:
+		When ``True`` and ``include_state=True``, place a copy of the raw state
+		as the first coordinates of the lifted observable vector.
+		When ``False`` (default), keeps existing ordering where bias (if used)
+		appears first.
 	random_state:
 		Optional seed for reproducible RBF center selection.
 	reg:
@@ -78,6 +83,7 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		gamma: float | None = None,
 		include_bias: bool = True,
 		include_state: bool = True,
+		state_first: bool = False,
 		random_state: int | None = None,
 		reg: float = 0.0,
 	) -> None:
@@ -88,6 +94,7 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		self.gamma = gamma
 		self.include_bias = include_bias
 		self.include_state = include_state
+		self.state_first = state_first
 		self.random_state = random_state
 		self.reg = reg
 
@@ -238,23 +245,28 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 		"""Map states into observable space."""
 		X = self._as_2d(X)
 		parts = []
+		state_added = False
+
+		if self.include_state and self.state_first:
+			parts.append(X)
+			state_added = True
 
 		if self.include_bias:
 			parts.append(np.ones((X.shape[0], 1), dtype=float))
 
 		if self.observable_type == "linear":
-			if self.include_state:
+			if self.include_state and not state_added:
 				parts.append(X)
 
 		elif self.observable_type == "polynomial":
-			if self.include_state:
+			if self.include_state and not state_added:
 				parts.append(X)
 			for combo in self._poly_combinations_:
 				monomial = np.prod(X[:, combo], axis=1, keepdims=True)
 				parts.append(monomial)
 
 		elif self.observable_type == "rbf":
-			if self.include_state:
+			if self.include_state and not state_added:
 				parts.append(X)
 			# Pairwise squared Euclidean distances to RBF centers.
 			diffs = X[:, None, :] - self.rbf_centers_[None, :, :]
@@ -262,7 +274,7 @@ class KoopmanEstimator(BaseEstimator, RegressorMixin):
 			parts.append(np.exp(-self.rbf_gamma_ * sq_dist))
 
 		elif self.observable_type == "rff":
-			if self.include_state:
+			if self.include_state and not state_added:
 				parts.append(X)
 			projection = X @ self.rff_weights_
 			scale = np.sqrt(1.0 / self.n_fourier_features)

@@ -163,7 +163,7 @@ If $\mathbf{A}=\mathbf{M}\mathbf{\Lambda}\mathbf{M}^{-1}$ and $\boldsymbol{\phi}
 $$
 \mathbf{x}(t)
 =
-\mathbf{W}\mathbf{\Lambda}^{m}\boldsymbol{\phi}
+\mathbf{M}\mathbf{\Lambda}^{m}\boldsymbol{\phi}
 =
 \sum_{j=1}^{k}\mathbf{m}_j\lambda_j^{t/\tau} \phi_j
 =
@@ -229,7 +229,7 @@ $$
 := \arg\min_{\widetilde{\mathbf{A}}}\|\mathbf{Z}'-\widetilde{\mathbf{A}}\mathbf{Z}\|_F,
 \qquad
 \mathbf{Z}=[\,\mathbf{z}_0\, | \, \ldots \, | \, \mathbf{z}_{p-1}\,],\
-\mathbf{Z}'=[\,\mathbf{z}_2\, | \, \ldots \, | \, \mathbf{z}_p\,].
+\mathbf{Z}'=[\,\mathbf{z}_1\, | \, \ldots \, | \, \mathbf{z}_p\,].
 $$
 
 Eigendecomposition of the fitted reduced operator:
@@ -380,9 +380,9 @@ $$
 
 DMD assumes a *linear discrete time autonomous dynamical system*
 
-- Mode Mixing
-- No uncertainty quantification or statistical significance assessment
-- Best for stationary oscillatory or exponential behavior
+- Mode Mixing [Schur decomposition](https://arxiv.org/pdf/2312.15837)
+- No uncertainty quantification or statistical significance assessment [BOP](https://arxiv.org/pdf/2107.10878) [Bayesian]() [Ensemble](https://journals.ametsoc.org/view/journals/aies/4/4/AIES-D-24-0088.1.xml)
+- Best for stationary oscillatory or exponential behavior [mrCOSTS](https://www.pnas.org/doi/10.1073/pnas.2415786122)
 - Exact DMD is not robust to noise -> Kutz reccomends [Optimized DMD](https://arxiv.org/pdf/1704.02343)
 - Difficult to interpret complex patterns from dynamic modes -> [phasor notation](https://arxiv.org/pdf/2509.03183)
 
@@ -840,6 +840,22 @@ Main idea:
 Main idea:
 
 - Koopman Mode Decomposition is interpretable structure beyond raw forecast error.
+
+---
+
+<!-- _class: small -->
+
+## Example 3: Sea surface temperature observations (demo4_kmd_sst.ipynb)
+
+- Global monthly mean SST measurements from 1850 to 2026
+- Preprocessing: anomalies, detrend, mean center, pca (scaled by pixel area)
+- Test prediction accuracy for nino1-2 index (using recursive feature rollout)
+- Plot spatial patterns, timeseries, etc
+
+
+Main idea:
+
+- Koopman Mode Decomposition can be used on real-world data.
 
 ---
 
