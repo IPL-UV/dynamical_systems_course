@@ -719,10 +719,10 @@ e.g. we measure temperature, but the governing equations are for pressure, veloc
 
 ## State space reconstruction: Whitney embedding theorem
 
-**Whitney embedding theorem** (1944): for any smooth $d$-dimensional manifold $M$, a **generic** smooth map $g: M \to \mathbb{R}^{2d+1}$ is an embedding (diffeomorphism)
+**Whitney embedding theorem** (1944): for any smooth $d$-dimensional manifold $M$, a **generic** smooth map $g: M \to \mathbb{R}^{2d+1}$ is an embedding
 
 - "Generic" means: almost any smooth function works, non-generic cases form a set of measure zero
-- Diffeomorphisms preserve all dynamical properties: topology of trajectories, Lyapunov exponents, attractor structure, i.e. gives an **equivalent dynamical system** in $\mathbb{R}^{2d+1}$
+- $g$ is a diffeomorphism between $M$ and its image $g(M)$, the dynamics on $M$ and on $g(M)\subset\mathbb{R}^{2d+1}$ are smoothly conjugate, i.e. they represent the same dynamical system in different coordinates
 
 
 ---
@@ -732,7 +732,7 @@ e.g. we measure temperature, but the governing equations are for pressure, veloc
 **Whitney embedding theorem** (1944): for any smooth $d$-dimensional manifold $M$, a **generic** smooth map $g: M \to \mathbb{R}^{2d+1}$ is an embedding (diffeomorphism)
 
 - "Generic" means: almost any smooth function works, non-generic cases form a set of measure zero
-- Diffeomorphisms preserve all dynamical properties: topology of trajectories, Lyapunov exponents, attractor structure, i.e. gives an **equivalent dynamical system** in $\mathbb{R}^{2d+1}$
+- $g$ is a diffeomorphism between $M$ and its image $g(M)$, the dynamics on $M$ and on $g(M)\subset\mathbb{R}^{2d+1}$ are smoothly conjugate, i.e. they represent the same dynamical system in different coordinates
 - In practice we do not know the dimension $d$, determinism or stationarity properties may not hold...
 - But still it gives an intuition why $2d+1$ generic measurements (e.g. temperatures at different locations) could be sufficient to represent climate dynamics
 
@@ -767,7 +767,7 @@ is an **embedding** (diffeomorphism) of $\mathcal{A}$ in $\mathbb{R}^{2d+1}$ for
 
 ---
 
-## Linear representation: Koopman Operator
+## Koopman Operator: linear dynamical system for observables
 
 Consider a linear space $G$ of observable functions $g(\mathbf{x})$, $\mathbf{x} \in M$, e.g. $g: M \to \mathbb{C}$
 
@@ -775,7 +775,7 @@ For a dynamical system $\mathbf{x}(t+\tau) = \varphi_\tau(\mathbf{x}(t))$, the *
 
 $$\mathcal{K}^\tau g = g \circ \varphi_\tau, \qquad \text{i.e.} \qquad (\mathcal{K}^\tau g)(\mathbf{x}) = g(\varphi_\tau(\mathbf{x}))$$
 
-- $\mathcal{K}^\tau$ is an evolution operator for observable functions: $g(\mathbf{x}(t+\tau)) = (\mathcal{K}^\tau g)(\mathbf{x}(t))$
+- **If $G$ is closed under $\mathcal{K}^\tau$**, i.e. $({K}^\tau g) \in G$, then $\mathcal{K}^\tau$ is an evolution operator for observable functions: $g(\mathbf{x}(t+\tau)) = (\mathcal{K}^\tau g)(\mathbf{x}(t))$
 - $\mathcal{K}^\tau$ is **linear**: $\mathcal{K}^\tau(\alpha g + \beta f) = \alpha\, \mathcal{K}^\tau g + \beta\, \mathcal{K}^\tau f$
 - Acts on an **infinite-dimensional** space
 
@@ -789,7 +789,7 @@ For a dynamical system $\mathbf{x}(t+\tau) = \varphi_\tau(\mathbf{x}(t))$, the *
 
 $$\mathcal{K}^\tau g = g \circ \varphi_\tau, \qquad \text{i.e.} \qquad (\mathcal{K}^\tau g)(\mathbf{x}) = g(\varphi_\tau(\mathbf{x}))$$
 
-- $\mathcal{K}^\tau$ is an evolution operator for observables (functions of the state): $g(\mathbf{x}(t+\tau)) = (\mathcal{K}^\tau g)(\mathbf{x}(t))$
+- **If $G$ is closed under $\mathcal{K}^\tau$**, i.e. $({K}^\tau g) \in G$, then $\mathcal{K}^\tau$ is an evolution operator for observable functions: $g(\mathbf{x}(t+\tau)) = (\mathcal{K}^\tau g)(\mathbf{x}(t))$
 - $\mathcal{K}^\tau$ is **linear**: $\mathcal{K}^\tau(\alpha g + \beta f) = \alpha\, \mathcal{K}^\tau g + \beta\, \mathcal{K}^\tau f$ 
 - Acts on an **infinite-dimensional** space
 - If $G$ is a space with inner product (Hilbert space), then we can define a complete basis $\{\psi_k\}$, decomposition along the basis $g = \sum_k \langle g, \psi_k \rangle\, \psi_k$, eigenvalues, eigenmodes ... 
