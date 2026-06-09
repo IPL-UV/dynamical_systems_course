@@ -1,9 +1,9 @@
 ---
-marp: true
+marp: false
 theme: extra
 paginate: true
 html: true
-footer: Dynamic Mode Decomposition / Koopman Mode Decomposition
+footer: Dynamical systems / Dynamic Mode Decomposition / Koopman
 ---
 
 <!-- Course font override -->
@@ -516,16 +516,15 @@ Choosing $\mathbf{g}(\mathbf{x}) = \mathbf{x}$ gives:
 
 ## Linear Koopman = DMD
 
-If *we choose the obser*vable map to be the linear (e.g., EOFs),
+If we choose the observable map to be linear (e.g., EOFs),
 
 $$
 \boldsymbol{\psi}(\mathbf{x}) = \mathbf{U}^\top \mathbf{x},
 $$
 
-ten the finite-dimensio
+then the finite-dimensional Koopman update becomes
 
-Note: as with DMD continuous eigenvalues $\omega$ are $\lambda = e^{\omega \tau}$
-nal Koopman update becomes
+Note: as with DMD, continuous-time and discrete-time eigenvalues satisfy $\lambda = e^{\omega \tau}$.
 
 $$
 \boldsymbol{\psi}_{k+1} = \mathbf{K}\boldsymbol{\psi}_k
@@ -682,7 +681,7 @@ $$
 ## Koopman Mode Decomposition with Extended DMD (EDMD)
 In the notebook, we approximate the Koopman operator on a finite dictionary of observables using EDMD [Williams  et al. 2014](https://arxiv.org/pdf/1408.4408).
 
-With dictionary $\mathcal{D}=\{\psi_1,\ldots,\psi_m\resented in $\mathrm{span}(\mathcal{D})$.
+With dictionary $\mathcal{D}=\{\psi_1,\ldots,\psi_m\}$, observables are represented in $\mathrm{span}(\mathcal{D})$.
 For the full-state observable, we also seek
 
 $$
@@ -758,7 +757,10 @@ For $\mathbf{K}$, the Koopman eigenfunctions are found by solving
 
 $$\mathbf{W}\mathbf{\Phi}_X = \mathbf{\Psi}_X \text{ for } \mathbf{\Phi}_X$$
 
-Since $\mathbf{W}$ is not always invertible we can use *pseudoinverse \mathbf{W}^\dagger $\mathbf{\Phi}_X = \mathbf{W}^\dagger \mathbf{\Psi}_X$*
+Since $\mathbf{W}$ is not always invertible, we can use the pseudoinverse:
+$$
+\mathbf{\Phi}_X = \mathbf{W}^{\dagger}\mathbf{\Psi}_X.
+$$
 
 *(This is like using loadings from DMD!)*
 
@@ -849,7 +851,7 @@ Main idea:
 
 - Global monthly mean SST measurements from 1850 to 2026
 - Preprocessing: anomalies, detrend, mean center, pca (scaled by pixel area)
-- Test prediction accuracy for nino1-2 index (using recursive feature rollout)
+- Test prediction accuracy for nino1+2 index (using recursive feature rollout)
 - Plot spatial patterns, timeseries, etc
 
 
